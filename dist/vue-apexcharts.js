@@ -12,6 +12,9 @@
         type: Object,
         required: true
       },
+      yaxis: {
+        type: Object
+      },
       type: {
         type: String,
         required: true,
@@ -45,6 +48,14 @@
           this.chart.updateOptions(this.options, true);
         }
       });
+      
+      this.$watch('yaxis', yaxis => {
+        if (!this.chart && yaxis) {
+          this.init();
+        } else {
+          this.chart.updateOptions({ yaxis: this.yaxis }, true);
+        }
+      }, { deep: true });
 
       this.$watch('series', series => {
         if (!this.chart && series) {
@@ -78,7 +89,8 @@
             height: this.height,
             width: this.width
           },
-          series: this.series
+          series: this.series,
+          yaxis: this.yaxis
         };
 
         const config = ApexCharts.merge(this.options, newOptions);
